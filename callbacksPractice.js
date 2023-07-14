@@ -79,8 +79,8 @@ function reduce(array, callback, initialValue) {
   return acc
 }
 
-const nums = [4, 1, 9];
-const add = function(a, b) { return a + b; }
+// const nums = [4, 1, 9];
+// const add = function(a, b) { return a + b; }
 
 
 // Challenge 7
@@ -187,7 +187,14 @@ function prioritize(array, callback) {
 
 // Challenge 14
 function countBy(array, callback) {
-  
+  let result = {};
+  let even = 0;
+  let odd = 0;
+  array.map(el => {
+    let key = callback(el);
+    key === "even" ? result[key] = ++even : result[key] = ++odd;
+  })
+  return result;
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -199,7 +206,12 @@ function countBy(array, callback) {
 
 // Challenge 15
 function groupBy(array, callback) {
-
+  let result = {}
+  array.map(el => {
+       				let key = callback(el)
+              result[key] ? result[key].push(el) : result[key] = [el]
+ 				 		})
+  return result
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -210,7 +222,13 @@ function groupBy(array, callback) {
 
 // Challenge 16
 function goodKeys(obj, callback) {
-
+  let result = []
+  for (let key in obj) {
+    if (callback(obj[key])) {
+      result.push(key)
+    };
+  } 
+	return result
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -221,10 +239,12 @@ function goodKeys(obj, callback) {
 
 // Challenge 17
 function commutative(func1, func2, value) {
-
+  let result1 = func2(func1(value)) 
+  let result2 = func1(func2(value)) 
+	return result1 === result2
 }
 
-// /*** Uncomment these to check your work! ***/
+/*** Uncomment these to check your work! ***/
 // const multBy3 = n => n * 3;
 // const divBy4 = n => n / 4;
 // const subtract5 = n => n - 5;
@@ -235,7 +255,13 @@ function commutative(func1, func2, value) {
 
 // Challenge 18
 function objFilter(obj, callback) {
-
+	let result = {}
+  for (let key in obj) {
+    if (callback(key) === obj[key]) {
+      result[key] = obj[key]
+    }
+  }
+  return result
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -249,7 +275,13 @@ function objFilter(obj, callback) {
 
 // Challenge 19
 function rating(arrOfFuncs, value) {
-
+  let totalElements = arrOfFuncs.length
+  let T = 0;
+  let F = 0;
+	arrOfFuncs.map(func => 
+                 func(value) ? ++T : ++F
+                )
+  return (T/totalElements)*100
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -264,7 +296,11 @@ function rating(arrOfFuncs, value) {
 
 // Challenge 20
 function pipe(arrOfFuncs, value) {
-
+  let result = value;
+  arrOfFuncs.map(func => {
+    result = func(result)
+  })
+  return result
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -277,7 +313,16 @@ function pipe(arrOfFuncs, value) {
 
 // Challenge 21
 function highestFunc(objOfFuncs, subject) {
-
+  let highest = 0
+  let highestKey = null
+  for (let key in objOfFuncs) {
+    let currentValue = objOfFuncs[key](subject)
+    if (currentValue > highest) {
+      highest = currentValue
+      highestKey = key
+    }
+  }
+  return highestKey
 }
 
 // /*** Uncomment these to check your work! ***/
@@ -292,7 +337,11 @@ function highestFunc(objOfFuncs, subject) {
 
 // Challenge 22
 function combineOperations(startVal, arrOfFuncs) {
-
+  let value = startVal;
+  arrOfFuncs.map(func => {
+    value = func(value)
+  })
+	return value
 }
 
 function add100(num) {
@@ -307,6 +356,14 @@ function multiplyByThree(num) {
   return num * 3;
 }
 
+function multiplyFive(num) {
+  return num * 5;
+}
+
+function addTen(num) {
+  return num + 10;
+}
+
 // /*** Uncomment these to check your work! ***/
 // console.log(combineOperations(0, [add100, divByFive, multiplyByThree])); // Should output 60 -->
 // console.log(combineOperations(0, [divByFive, multiplyFive, addTen])); // Should output 10
@@ -314,7 +371,12 @@ function multiplyByThree(num) {
 
 // Challenge 23
 function myFunc(array, callback) {
-
+  for (let i=0; i < array.length; i++) {
+    if (callback(array[i])) {
+      return 1
+    }
+  }
+  return -1
 }
 
 const numbers = [2, 3, 6, 64, 10, 8, 12];
@@ -331,7 +393,7 @@ function isOdd(num) {
 
 // Challenge 24
 function myForEach(array, callback) {
-
+	array.map(el => callback(el))
 }
 
 let sum = 0;
@@ -344,3 +406,4 @@ function addToSum(num) {
 // const nums = [1, 2, 3];
 // myForEach(nums, addToSum);
 // console.log(sum); // Should output 6
+
